@@ -1,21 +1,38 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState, useEffect } from "react";
+import { Provider as StoreProvider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+import AnimatedSplash from "react-native-animated-splash-screen";
 
-export default function App() {
+import { firebaseApp } from "./app/utils/firebase";
+import Navigation from "./app/navigations/Navigation";
+import store, { persistor } from "./app/store/";
+
+const App = () => {
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    firebaseApp;
+    setTimeout(() => {
+      setIsLoaded(true);
+    }, 4000);
+  }, []);
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <StoreProvider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <AnimatedSplash
+          translucent={true}
+          isLoaded={isLoaded}
+          logoImage={require("./assets/splash2.png")}
+          backgroundColor={"#ff9933"}
+          logoHeight={500}
+          logoWidht={500}
+        >
+          <Navigation />
+        </AnimatedSplash>
+      </PersistGate>
+    </StoreProvider>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
