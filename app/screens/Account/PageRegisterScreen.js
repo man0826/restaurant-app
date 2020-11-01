@@ -1,32 +1,35 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, ImageBackground } from "react-native";
-import { Input } from "react-native-elements";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ImageBackground,
+  Dimensions,
+} from "react-native";
+import { Input, Icon } from "react-native-elements";
 import { Button } from "react-native-elements";
 import { size, isEmpty } from "lodash";
-import { useNavigation } from "@react-navigation/native";
 import * as firebase from "firebase";
 import Spinner from "react-native-loading-spinner-overlay";
 
 import { validateEmail } from "../../utils/validations";
-import ModalBox from "../ModalBox";
-import RegisterFacebook from "./RegisterFacebook";
+import RegisterFacebook from "../../components/Account/RegisterFacebook";
 
-const ModalRegister = (props) => {
-  const {
-    setIsModalOpen,
-    isModalOpen,
-    errors,
-    setErrors,
-    registerError,
-    setRegisterError,
-  } = props;
+const screenHeight = Dimensions.get("screen").height;
+
+const PageRegisterScreen = (props) => {
+  const { navigation } = props;
   const [formData, setFormData] = useState({
     email: "",
     password: "",
     repeatPassword: "",
   });
+  const [errors, setErrors] = useState({
+    email: "",
+    password: "",
+  });
+  const [registerError, setRegisterError] = useState(false);
   const [spinner, setSpinner] = useState(false);
-  const navigation = useNavigation();
 
   const onChange = (value, type) => {
     setFormData({ ...formData, [type]: value });
@@ -62,31 +65,33 @@ const ModalRegister = (props) => {
         .then(() => {
           navigation.navigate("account");
           setSpinner(false);
-          setIsModalOpen(true);
         })
         .catch(() => {
           setRegisterError(true);
           setSpinner(false);
-          setIsModalOpen(true);
         });
     }
   };
 
   return (
-    <ModalBox
-      isModalOpen={isModalOpen}
-      setIsModalOpen={setIsModalOpen}
-      type="login"
-    >
-      <View style={styles.container}>
-        <ImageBackground
-          source={require("../../../assets/img/login.jpg")}
-          resizeMode="cover"
-          style={styles.imageBackground}
-        >
+    <View>
+      <ImageBackground
+        source={require("../../../assets/img/login.jpg")}
+        resizeMode="cover"
+        style={styles.imageBackground}
+      >
+        <Icon
+          type="entypo"
+          name="cross"
+          size={35}
+          color="#fff"
+          containerStyle={styles.closeIcon}
+          onPress={() => navigation.goBack()}
+        />
+        <View style={styles.container}>
           {registerError && (
-            <View style={styles.loginError}>
-              <Text style={styles.loginErrorText}>
+            <View style={styles.registerError}>
+              <Text style={styles.registerErrorText}>
                 このメールアドレスでは登録できません。
               </Text>
             </View>
@@ -94,19 +99,19 @@ const ModalRegister = (props) => {
           <Input
             label="メールアドレス"
             labelStyle={styles.inputLabel}
-            containerStyle={styles.inputEmail}
             inputContainerStyle={styles.inputContainer}
+            containerStyle={styles.inputEmail}
             inputStyle={styles.inputText}
             placeholder="example@outlook.jp"
             placeholderTextColor="#aaa"
             autoCapitalize="none"
+            autoCorrect={false}
             leftIcon={{
               type: "material-community",
               name: "email",
               color: "#fff",
             }}
             leftIconContainerStyle={styles.inputLeftIcon}
-            autoCorrect={false}
             errorMessage={errors.email}
             errorStyle={styles.errorText}
             onChangeText={(value) => onChange(value, "email")}
@@ -120,14 +125,14 @@ const ModalRegister = (props) => {
             secureTextEntry={true}
             containerStyle={styles.inputPassword}
             inputStyle={styles.inputText}
+            autoCapitalize="none"
+            autoCorrect={false}
             leftIcon={{
               type: "material-community",
               name: "lock",
               color: "#fff",
             }}
             leftIconContainerStyle={styles.inputLeftIcon}
-            autoCapitalize="none"
-            autoCorrect={false}
             errorMessage={errors.password}
             errorStyle={styles.errorText}
             onChangeText={(value) => onChange(value, "password")}
@@ -151,67 +156,70 @@ const ModalRegister = (props) => {
             leftIconContainerStyle={styles.inputLeftIcon}
             onChangeText={(value) => onChange(value, "repeatPassword")}
           />
-          <View style={{ alignItems: "center" }}>
+          <View style={styles.registerButtonWrap}>
             <Button
               type="outline"
-              containerStyle={{ marginBottom: 40 }}
-              buttonStyle={styles.loginButton}
+              containerStyle={styles.registerButtonContainer}
+              buttonStyle={styles.registerButton}
               title="登録する"
-              titleStyle={styles.loginButtonTitle}
+              titleStyle={styles.registerButtonTitle}
               onPress={onSubmit}
             />
             <Text style={styles.bottomText}>または</Text>
             <RegisterFacebook />
           </View>
-        </ImageBackground>
-      </View>
+        </View>
+      </ImageBackground>
       <Spinner
         visible={spinner}
         overlayColor="rgba(0,0,0,0.5)"
         animation="fade"
       />
-    </ModalBox>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   imageBackground: {
-    flex: 1,
-    justifyContent: "center",
+    width: "100%",
+    height: screenHeight,
   },
-  loginError: {
+  closeIcon: {
+    position: "absolute",
+    top: 60,
+    left: 10,
+  },
+  container: {
+    paddingHorizontal: 10,
+    paddingTop: screenHeight / 6,
+  },
+  registerError: {
     alignItems: "center",
     marginBottom: 15,
   },
-  loginErrorText: {
+  registerErrorText: {
     color: "red",
     fontSize: 16,
     textShadowColor: "rgba(0, 0, 0, 0.75)",
-    textShadowOffset: {
-      width: 0,
-      height: 1,
-    },
+    textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 1,
-  },
-  inputEmail: {
-    marginBottom: 20,
-  },
-  inputPassword: {
-    marginBottom: 20,
-  },
-  inputRepeatPassword: {
-    marginBottom: 50,
-  },
-  inputContainer: {
-    borderBottomColor: "#fff",
-    borderBottomWidth: 2,
   },
   inputLabel: {
     color: "#fff",
     fontSize: 17,
+  },
+  inputEmail: {
+    marginBottom: 10,
+  },
+  inputPassword: {
+    marginBottom: 10,
+  },
+  inputRepeatPassword: {
+    marginBottom: 40,
+  },
+  inputContainer: {
+    borderBottomColor: "#fff",
+    borderBottomWidth: 2,
   },
   inputText: {
     color: "#fff",
@@ -222,25 +230,25 @@ const styles = StyleSheet.create({
   errorText: {
     fontSize: 16,
     textShadowColor: "rgba(0, 0, 0, 0.75)",
-    textShadowOffset: {
-      width: 0,
-      height: 1,
-    },
+    textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 1,
   },
-  loginButtonContainer: {
-    marginBottom: 40,
+  registerButtonWrap: {
+    alignItems: "center",
   },
-  loginButtonTitle: {
-    color: "#fff",
-    fontWeight: "bold",
-  },
-  loginButton: {
+  registerButton: {
     borderColor: "#fff",
     borderWidth: 1,
     borderRadius: 50,
-    paddingVertical: 15,
+    paddingVertical: 13,
     width: 250,
+  },
+  registerButtonContainer: {
+    marginBottom: 30,
+  },
+  registerButtonTitle: {
+    fontWeight: "bold",
+    color: "#fff",
   },
   bottomText: {
     fontSize: 17,
@@ -250,4 +258,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ModalRegister;
+export default PageRegisterScreen;

@@ -4,7 +4,6 @@ import firebase from "firebase";
 import * as Facebook from "expo-facebook";
 import { useNavigation } from "@react-navigation/native";
 import { FacebookApi } from "../../utils/social";
-import Loading from "../Loading";
 
 export default function LoginFacebook(props) {
   const { toastRef } = props;
@@ -49,7 +48,6 @@ export default function LoginFacebook(props) {
         style={{ width: 300 }}
         fontStyle={{ fontSize: 17 }}
       />
-      <Loading isVisible={loading} text="Iniciando sesión" />
     </>
   );
 }

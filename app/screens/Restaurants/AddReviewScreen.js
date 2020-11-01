@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import {
-  StyleSheet,
   Text,
   View,
+  StyleSheet,
   ScrollView,
   Alert,
   Platform,
@@ -21,26 +21,37 @@ import uuid from "random-uuid-v4";
 import firebase from "firebase";
 import Spinner from "react-native-loading-spinner-overlay";
 
-import ModalBox from "../ModalBox";
 import colors from "../../constants/Colors";
 
 const db = firebase.firestore();
 
-const ModalAddReview = (props) => {
-  const {
-    setIsModalReviewOpen,
-    isModalReviewOpen,
-    restaurant,
-    setReload,
-    errors,
-    setErrors,
-  } = props;
+const AddReviewScreen = (props) => {
+  const { navigation, route } = props;
+  const { restaurant, setReload } = route.params;
   const { id, name } = restaurant;
   const [rating, setRating] = useState(null);
   const [title, setTitle] = useState("");
   const [review, setReview] = useState("");
+  const [errors, setErrors] = useState({
+    rating: false,
+    title: "",
+    review: "",
+  });
   const [spinner, setSpinner] = useState(false);
   const [imagesSelected, setImagesSelected] = useState([]);
+
+  navigation.setOptions({
+    headerLeft: () => (
+      <Icon
+        type="entypo"
+        name="cross"
+        color="#000"
+        size={35}
+        onPress={closeHandler}
+        containerStyle={{ marginLeft: 5 }}
+      />
+    ),
+  });
 
   const addRevew = () => {
     setErrors({
@@ -79,7 +90,7 @@ const ModalAddReview = (props) => {
             setTitle("");
             setReview("");
             setImagesSelected([]);
-            setIsModalReviewOpen(!isModalReviewOpen);
+            navigation.goBack();
             setReload(true);
           })
           .catch(() => {
@@ -112,7 +123,7 @@ const ModalAddReview = (props) => {
     return imageBlob;
   };
 
-  const modalCloseHandler = () => {
+  const closeHandler = () => {
     Alert.alert(
       "投稿編集を保存していませんが、終了してよろしいですか？",
       "",
@@ -128,7 +139,7 @@ const ModalAddReview = (props) => {
             setTitle("");
             setReview("");
             setImagesSelected([]);
-            setIsModalReviewOpen(!isModalReviewOpen);
+            navigation.goBack();
           },
         },
       ],
@@ -137,15 +148,7 @@ const ModalAddReview = (props) => {
   };
 
   return (
-    <ModalBox
-      isModalOpen={isModalReviewOpen}
-      setIsModalOpen={setIsModalReviewOpen}
-      type="addReview"
-      modalCloseHandler={modalCloseHandler}
-    >
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>口コミ投稿</Text>
-      </View>
+    <>
       <ScrollView style={styles.container}>
         <Text style={styles.restaurantName}>{name}</Text>
         <View style={styles.ratingWrap}>
@@ -172,7 +175,7 @@ const ModalAddReview = (props) => {
         <Input
           placeholder="タイトルを入れてください"
           containerStyle={styles.inputTitle}
-          inputContainerStyle={styles.inputContainer}
+          inputContainerStyle={styles.inputTitleContainer}
           inputStyle={styles.inputTitleText}
           multiline={true}
           onChange={(e) => setTitle(e.nativeEvent.text)}
@@ -208,7 +211,7 @@ const ModalAddReview = (props) => {
         overlayColor="rgba(0,0,0,0.5)"
         animation="fade"
       />
-    </ModalBox>
+    </>
   );
 };
 
@@ -255,7 +258,7 @@ const UploadImage = (props) => {
   };
 
   return (
-    <View style={styles.ImageContainer}>
+    <View style={styles.imageContainer}>
       {size(imagesSelected) < 5 && (
         <Icon
           type="material-community"
@@ -278,32 +281,13 @@ const UploadImage = (props) => {
 };
 
 const styles = StyleSheet.create({
-  header: {
-    width: "100%",
-    height: Platform.OS === "ios" ? 90 : 70,
-    paddingTop: Platform.OS === "ios" ? 55 : 25,
-    backgroundColor: colors.primary,
-    shadowColor: "#000",
-    shadowRadius: 3,
-    shadowOpacity: 0.3,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-  },
-  headerTitle: {
-    textAlign: "center",
-    fontSize: 19,
-    fontWeight: "bold",
-    color: "#000",
-  },
   container: {
-    paddingVertical: 30,
+    paddingTop: 30,
     paddingHorizontal: 10,
     flex: 1,
   },
   restaurantName: {
-    fontSize: 18,
+    fontSize: 17,
     fontWeight: "bold",
   },
   ratingWrap: {
@@ -324,7 +308,7 @@ const styles = StyleSheet.create({
   inputTitle: {
     marginBottom: 10,
   },
-  inputContainer: {
+  inputTitleContainer: {
     borderBottomWidth: 0,
   },
   inputTitleText: {
@@ -344,7 +328,7 @@ const styles = StyleSheet.create({
   postButtonTitle: {
     fontSize: 17,
   },
-  ImageContainer: {
+  imageContainer: {
     flexDirection: "row",
     marginHorizontal: 10,
     marginTop: 30,
@@ -365,4 +349,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ModalAddReview;
+export default AddReviewScreen;

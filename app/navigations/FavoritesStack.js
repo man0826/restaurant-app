@@ -1,13 +1,13 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import Favorites from "../screens/Favorites";
-import Restaurant from "../screens/Restaurants/Restaurant";
-import colors from "../utils/colors";
+import FavoritesScreen from "../screens/FavoritesScreen";
+import RestaurantScreen from "../screens/Restaurants/RestaurantScreen";
+import colors from "../constants/Colors";
 
 const Stack = createStackNavigator();
 
-export default function FavoriteStack() {
+const FavoriteStack = () => {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -24,10 +24,12 @@ export default function FavoriteStack() {
     >
       <Stack.Screen
         name="favorites"
-        component={Favorites}
+        component={FavoritesScreen}
         options={{ title: "マイリスト" }}
       />
-      <Stack.Screen name="restaurant" component={Restaurant} />
+      <Stack.Screen name="restaurant" component={RestaurantScreen} />
     </Stack.Navigator>
   );
-}
+};
+
+export default FavoriteStack;

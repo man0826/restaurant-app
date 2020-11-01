@@ -1,18 +1,18 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import Home from "../screens/Restaurants/Home";
-import Restaurant from "../screens/Restaurants/Restaurant";
-import Review from "../screens/Restaurants/Review";
-import ListRestaurants from "../screens/Restaurants/ListRestaurants";
-import ListCategory from "../screens/Restaurants/ListCategory";
-import ListPref from "../screens/Restaurants/ListPref";
-import ListAreaLarge from "../screens/Restaurants/ListAreaLarge";
-import SearchRestaurants from "../screens/Restaurants/SearchRestaurants";
-import SearchListRestaurants from "../screens/Restaurants/SearchListRestaurants";
-import SearchMap from "../screens/Restaurants/SearchMap";
-import AddReview from "../screens/Restaurants/AddReview";
-import colors from "../utils/colors";
+import HomeScreen from "../screens/Restaurants/HomeScreen";
+import RestaurantScreen from "../screens/Restaurants/RestaurantScreen";
+import ReviewScreen from "../screens/Restaurants/ReviewScreen";
+import ListRestaurantsScreen from "../screens/Restaurants/ListRestaurantsScreen";
+import ListCategoryScreen from "../screens/Restaurants/ListCategoryScreen";
+import ListPrefScreen from "../screens/Restaurants/ListPrefScreen";
+import ListAreaLargeScreen from "../screens/Restaurants/ListAreaLargeScreen";
+import SearchRestaurantsScreen from "../screens/Restaurants/SearchRestaurantsScreen";
+import SearchListRestaurantsScreen from "../screens/Restaurants/SearchListRestaurantsScreen";
+import SearchMapScreen from "../screens/Restaurants/SearchMapScreen";
+import AddReviewScreen from "../screens/Restaurants/AddReviewScreen";
+import colors from "../constants/Colors";
 
 const Stack = createStackNavigator();
 
@@ -34,56 +34,56 @@ const HomeStack = () => {
     >
       <Stack.Screen
         name="home"
-        component={Home}
+        component={HomeScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen
         name="restaurant"
-        component={Restaurant}
+        component={RestaurantScreen}
         options={{
           headerStyle: { backgroundColor: colors.primary, shadowOpacity: 0 },
         }}
       />
-      <Stack.Screen name="review" component={Review} />
-      <Stack.Screen name="list-restaurants" component={ListRestaurants} />
+      <Stack.Screen name="review" component={ReviewScreen} />
+      <Stack.Screen name="list-restaurants" component={ListRestaurantsScreen} />
       <Stack.Screen
         name="list-category"
-        component={ListCategory}
+        component={ListCategoryScreen}
         options={{
           headerStyle: { backgroundColor: colors.primary, shadowOpacity: 0 },
         }}
       />
       <Stack.Screen
         name="list-pref"
-        component={ListPref}
+        component={ListPrefScreen}
         options={{
           headerStyle: { backgroundColor: colors.primary, shadowOpacity: 0 },
         }}
       />
       <Stack.Screen
         name="list-area-large"
-        component={ListAreaLarge}
+        component={ListAreaLargeScreen}
         options={{
           headerStyle: { backgroundColor: colors.primary, shadowOpacity: 0 },
         }}
       />
       <Stack.Screen
         name="search-restaurants"
-        component={SearchRestaurants}
+        component={SearchRestaurantsScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen
         name="search-list-restaurants"
-        component={SearchListRestaurants}
+        component={SearchListRestaurantsScreen}
       />
       <Stack.Screen
         name="search-map"
-        component={SearchMap}
+        component={SearchMapScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen
         name="add-review"
-        component={AddReview}
+        component={AddReviewScreen}
         options={{ title: "口コミ投稿" }}
       />
     </Stack.Navigator>

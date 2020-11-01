@@ -1,28 +1,28 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import Account from "../screens/Account/Account";
-import Login from "../screens/Account/Login";
-import UserLogged from "../screens/Account/UserLogged";
-import AccountInfoChagne from "../screens/Account/AccountInfoChange";
-import ChangeName from "../screens/Account/ChangeName";
-import ChangeEmail from "../screens/Account/ChangeEmail";
-import ChangePassword from "../screens/Account/ChangePassword";
-import MyReviews from "../screens/Account/MyReviews";
-import Review from "../screens/Restaurants/Review";
-import Restaurant from "../screens/Restaurants/Restaurant";
-import PageLogin from "../screens/Account/PageLogin";
-import PageRegister from "../screens/Account/PageRegister";
-import colors from "../utils/colors";
+import AccountScreen from "../screens/Account/AccountScreen";
+import LoginScreen from "../screens/Account/LoginScreen";
+import UserLoggedScreen from "../screens/Account/UserLoggedScreen";
+import AccountInfoChagneScreen from "../screens/Account/AccountInfoChangeScreen";
+import ChangeNameScreen from "../screens/Account/ChangeNameScreen";
+import ChangeEmailScreen from "../screens/Account/ChangeEmailScreen";
+import ChangePasswordScreen from "../screens/Account/ChangePasswordScreen";
+import MyReviewsScreen from "../screens/Account/MyReviewsScreen";
+import ReviewScreen from "../screens/Restaurants/ReviewScreen";
+import RestaurantScreen from "../screens/Restaurants/RestaurantScreen";
+import PageLoginScreen from "../screens/Account/PageLoginScreen";
+import PageRegisterScreen from "../screens/Account/PageRegisterScreen";
+import colors from "../constants/Colors";
 
 const Stack = createStackNavigator();
 
-export default function AccountStack() {
+const AccountStack = () => {
   return (
     <Stack.Navigator
       screenOptions={{
         headerStyle: {
-          backgroundColor: "#ff9933",
+          backgroundColor: colors.primary,
         },
         headerTitleStyle: {
           color: "#000",
@@ -34,34 +34,38 @@ export default function AccountStack() {
     >
       <Stack.Screen
         name="account"
-        component={Account}
+        component={AccountScreen}
         options={{ headerShown: false }}
       />
-      <Stack.Screen name="login" component={Login} />
-      <Stack.Screen name="user-logged" component={UserLogged} />
+      <Stack.Screen name="login" component={LoginScreen} />
+      <Stack.Screen
+        name="user-logged"
+        component={UserLoggedScreen}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen
         name="account-info-change"
-        component={AccountInfoChagne}
+        component={AccountInfoChagneScreen}
         options={{ title: "会員情報の登録・変更" }}
       />
       <Stack.Screen
         name="change-name"
-        component={ChangeName}
+        component={ChangeNameScreen}
         options={{ title: "お名前の登録・変更" }}
       />
       <Stack.Screen
         name="change-email"
-        component={ChangeEmail}
+        component={ChangeEmailScreen}
         options={{ title: "メールアドレスの変更" }}
       />
       <Stack.Screen
         name="change-password"
-        component={ChangePassword}
+        component={ChangePasswordScreen}
         options={{ title: "パスワードの変更" }}
       />
       <Stack.Screen
         name="my-reviews"
-        component={MyReviews}
+        component={MyReviewsScreen}
         options={{
           title: "マイレビュー",
           headerStyle: {
@@ -73,15 +77,15 @@ export default function AccountStack() {
           },
         }}
       />
-      <Stack.Screen name="restaurant" component={Restaurant} />
+      <Stack.Screen name="restaurant" component={RestaurantScreen} />
       <Stack.Screen
         name="page-login"
-        component={PageLogin}
+        component={PageLoginScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen
         name="page-register"
-        component={PageRegister}
+        component={PageRegisterScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen
@@ -95,8 +99,10 @@ export default function AccountStack() {
             shadowOffset: { width: 0, height: 2 },
           },
         }}
-        component={Review}
+        component={ReviewScreen}
       />
     </Stack.Navigator>
   );
-}
+};
+
+export default AccountStack;

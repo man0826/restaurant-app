@@ -1,16 +1,16 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import PostReview from "../screens/PostReview/PostReivew";
-import Review from "../screens/Restaurants/Review";
-import Restaurant from "../screens/Restaurants/Restaurant";
-import PageLogin from "../screens/Account/PageLogin";
-import AddReview from "../screens/Restaurants/AddReview";
-import colors from "../utils/colors";
+import PostReviewScreen from "../screens/PostReview/PostReivewScreen";
+import ReviewScreen from "../screens/Restaurants/ReviewScreen";
+import RestaurantScreen from "../screens/Restaurants/RestaurantScreen";
+import PageLoginScreen from "../screens/Account/PageLoginScreen";
+import AddReviewScreen from "../screens/Restaurants/AddReviewScreen";
+import colors from "../constants/Colors";
 
 const Stack = createStackNavigator();
 
-export default function PostReviewStack() {
+const PostReviewStack = () => {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -23,21 +23,23 @@ export default function PostReviewStack() {
     >
       <Stack.Screen
         name="post-review"
-        component={PostReview}
+        component={PostReviewScreen}
         options={{ title: "オススメのお店を投稿する" }}
       />
-      <Stack.Screen name="review" component={Review} />
-      <Stack.Screen name="restaurant" component={Restaurant} />
+      <Stack.Screen name="review" component={ReviewScreen} />
+      <Stack.Screen name="restaurant" component={RestaurantScreen} />
       <Stack.Screen
         name="page-login"
-        component={PageLogin}
+        component={PageLoginScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen
         name="add-review"
-        component={AddReview}
+        component={AddReviewScreen}
         options={{ title: "口コミ投稿" }}
       />
     </Stack.Navigator>
   );
-}
+};
+
+export default PostReviewStack;

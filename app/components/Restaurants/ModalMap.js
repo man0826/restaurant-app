@@ -1,6 +1,4 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
-import { Button } from "react-native-elements";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import ModalBox from "../ModalBox";
 
@@ -10,8 +8,8 @@ const ModalMap = (props) => {
   const location = {
     latitude: parseFloat(restaurant.latitude),
     longitude: parseFloat(restaurant.longitude),
-    latitudeDelta: 0.005,
-    longitudeDelta: 0.005,
+    latitudeDelta: 0.046,
+    longitudeDelta: 0.026,
   };
 
   return (

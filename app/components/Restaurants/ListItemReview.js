@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import { Rating, Avatar } from "react-native-elements";
-import colors from "../../utils/colors";
+import colors from "../../constants/Colors";
 
 import ImagesReview from "./ImagesReview";
 
@@ -24,7 +24,7 @@ const ListItemReview = (props) => {
     <TouchableWithoutFeedback
       onPress={() => navigation.navigate("review", { review })}
     >
-      <View style={styles.viewReview}>
+      <View style={styles.container}>
         <View
           style={{
             flexDirection: "row",
@@ -105,7 +105,7 @@ const ListItemReview = (props) => {
 };
 
 const styles = StyleSheet.create({
-  viewReview: {
+  container: {
     padding: 15,
     marginHorizontal: 5,
     marginVertical: 5,
@@ -114,7 +114,10 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowRadius: 1,
     shadowOpacity: 0.2,
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
   },
   imageAvatarUser: {
     width: 40,

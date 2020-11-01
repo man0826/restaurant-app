@@ -1,32 +1,32 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, ImageBackground } from "react-native";
-import { Input } from "react-native-elements";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ImageBackground,
+  Dimensions,
+} from "react-native";
+import { Input, Icon } from "react-native-elements";
 import { Button } from "react-native-elements";
 import { isEmpty } from "lodash";
-import { useNavigation } from "@react-navigation/native";
 import * as firebase from "firebase";
 import Spinner from "react-native-loading-spinner-overlay";
 
 import { validateEmail } from "../../utils/validations";
-import ModalBox from "../ModalBox";
-import LoginFacebook from "./LoginFacebook";
+import LoginFacebook from "../../components/Account/LoginFacebook";
 
-const ModalLogin = (props) => {
-  const {
-    setIsModalOpen,
-    isModalOpen,
-    type,
-    errors,
-    setErrors,
-    loginError,
-    setLoginError,
-  } = props;
+const screenHeight = Dimensions.get("screen").height;
+
+const PageLoginScreen = (props) => {
+  const { type } = props.route.params;
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+  const [errors, setErrors] = useState({ email: "", password: "" });
+  const [loginError, setLoginError] = useState(false);
   const [spinner, setSpinner] = useState(false);
-  const navigation = useNavigation();
+  const { navigation } = props;
 
   const onChange = (value, type) => {
     setFormData({ ...formData, [type]: value });
@@ -54,11 +54,13 @@ const ModalLogin = (props) => {
         .auth()
         .signInWithEmailAndPassword(formData.email, formData.password)
         .then(() => {
-          type !== "post" && navigation.navigate("account");
+          type !== "post"
+            ? navigation.navigate("account")
+            : navigation.goBack();
           setSpinner(false);
-          setIsModalOpen(false);
         })
         .catch(() => {
+          console.log(100);
           setLoginError(true);
           setSpinner(false);
         });
@@ -66,17 +68,21 @@ const ModalLogin = (props) => {
   };
 
   return (
-    <ModalBox
-      isModalOpen={isModalOpen}
-      setIsModalOpen={setIsModalOpen}
-      type="login"
-    >
-      <View style={styles.container}>
-        <ImageBackground
-          source={require("../../../assets/img/login.jpg")}
-          resizeMode="cover"
-          style={styles.imageBackground}
-        >
+    <View>
+      <ImageBackground
+        source={require("../../../assets/img/login.jpg")}
+        resizeMode="cover"
+        style={styles.imageBackground}
+      >
+        <Icon
+          type="entypo"
+          name="cross"
+          size={35}
+          color="#fff"
+          containerStyle={styles.closeIcon}
+          onPress={() => navigation.goBack()}
+        />
+        <View style={styles.container}>
           {loginError && (
             <View style={styles.loginError}>
               <Text style={styles.loginErrorText}>
@@ -107,20 +113,20 @@ const ModalLogin = (props) => {
           <Input
             label="パスワード"
             labelStyle={styles.inputLabel}
-            containerStyle={styles.inputPassword}
             inputContainerStyle={styles.inputContainer}
             placeholder="パスワード"
             placeholderTextColor="#aaa"
             secureTextEntry={true}
+            containerStyle={styles.inputPassword}
             inputStyle={styles.inputText}
-            autoCapitalize="none"
-            autoCorrect={false}
             leftIcon={{
               type: "material-community",
               name: "lock",
               color: "#fff",
             }}
             leftIconContainerStyle={styles.inputLeftIcon}
+            autoCapitalize="none"
+            autoCorrect={false}
             errorMessage={errors.password}
             errorStyle={styles.errorText}
             onChangeText={(value) => onChange(value, "password")}
@@ -137,38 +143,45 @@ const ModalLogin = (props) => {
             <Text style={styles.bottomText}>または</Text>
             <LoginFacebook />
           </View>
-        </ImageBackground>
-      </View>
+        </View>
+      </ImageBackground>
       <Spinner
         visible={spinner}
         overlayColor="rgba(0,0,0,0.5)"
         animation="fade"
       />
-    </ModalBox>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   imageBackground: {
-    flex: 1,
-    justifyContent: "center",
+    width: "100%",
+    height: screenHeight,
+  },
+  closeIcon: {
+    position: "absolute",
+    top: 60,
+    left: 10,
+  },
+  container: {
+    paddingHorizontal: 10,
+    paddingTop: screenHeight / 5,
   },
   loginError: {
     alignItems: "center",
-    marginBottom: 15,
+    marginBottom: 20,
   },
   loginErrorText: {
     color: "red",
     fontSize: 16,
     textShadowColor: "rgba(0, 0, 0, 0.75)",
-    textShadowOffset: {
-      width: 0,
-      height: 1,
-    },
+    textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 1,
+  },
+  inputLabel: {
+    color: "#fff",
+    fontSize: 17,
   },
   inputEmail: {
     marginBottom: 20,
@@ -180,10 +193,6 @@ const styles = StyleSheet.create({
     borderBottomColor: "#fff",
     borderBottomWidth: 2,
   },
-  inputLabel: {
-    color: "#fff",
-    fontSize: 17,
-  },
   inputText: {
     color: "#fff",
   },
@@ -193,28 +202,25 @@ const styles = StyleSheet.create({
   errorText: {
     fontSize: 16,
     textShadowColor: "rgba(0, 0, 0, 0.75)",
-    textShadowOffset: {
-      width: 0,
-      height: 1,
-    },
+    textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 1,
   },
   loginButtonWrap: {
     alignItems: "center",
   },
-  loginButtonContainer: {
-    marginBottom: 40,
-  },
-  loginButtonTitle: {
-    color: "#fff",
-    fontWeight: "bold",
-  },
   loginButton: {
     borderColor: "#fff",
     borderWidth: 1,
     borderRadius: 50,
-    paddingVertical: 15,
+    paddingVertical: 13,
     width: 250,
+  },
+  loginButtonTitle: {
+    fontWeight: "bold",
+    color: "#fff",
+  },
+  loginButtonContainer: {
+    marginBottom: 30,
   },
   bottomText: {
     fontSize: 17,
@@ -224,4 +230,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ModalLogin;
+export default PageLoginScreen;

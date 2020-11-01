@@ -8,7 +8,7 @@ import FavoritesStack from "./FavoritesStack";
 import PostReviewStack from "./PostReviewStack";
 import TimelineStack from "./TimelineStack";
 import AccountStack from "./AccountStack";
-import colors from "../utils/colors";
+import colors from "../constants/Colors";
 
 const Tab = createBottomTabNavigator();
 
@@ -81,7 +81,7 @@ const Navigation = () => {
 
 export default Navigation;
 
-function screenOptions(route, color) {
+const screenOptions = (route, color) => {
   let iconName;
   let iconType;
 
@@ -110,4 +110,4 @@ function screenOptions(route, color) {
       break;
   }
   return <Icon type={iconType} name={iconName} size={22} color={color} />;
-}
+};

@@ -1,10 +1,10 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import Restaurant from "../screens/Restaurants/Restaurant";
-import Review from "../screens/Restaurants/Review";
-import Timeline from "../screens/Timeline";
-import colors from "../utils/colors";
+import RestaurantScreen from "../screens/Restaurants/RestaurantScreen";
+import ReviewScreen from "../screens/Restaurants/ReviewScreen";
+import TimelineScreen from "../screens/TimelineScreen";
+import colors from "../constants/Colors";
 
 const Stack = createStackNavigator();
 
@@ -25,11 +25,11 @@ const TimelineStack = () => {
     >
       <Stack.Screen
         name="timeline"
-        component={Timeline}
+        component={TimelineScreen}
         options={{ title: "タイムライン" }}
       />
-      <Stack.Screen name="restaurant" component={Restaurant} />
-      <Stack.Screen name="review" component={Review} />
+      <Stack.Screen name="restaurant" component={RestaurantScreen} />
+      <Stack.Screen name="review" component={ReviewScreen} />
     </Stack.Navigator>
   );
 };
