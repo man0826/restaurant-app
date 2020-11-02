@@ -22,6 +22,7 @@ const SearchMapScreen = (props) => {
     latitude: 31.5633896,
     longitude: 130.5522253,
   });
+
   const [restaurants, setRestaurants] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [spinner, setSpinner] = useState(true);
